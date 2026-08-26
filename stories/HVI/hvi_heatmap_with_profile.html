@@ -911,7 +911,7 @@
           ["Area", stats.areaKm2.toLocaleString(), "km²"],
           ["Avg. household income", `$${stats.avgIncome.toLocaleString()}`, ""],
           ["Employment rate", stats.employmentRate.toFixed(1), "%"],
-          ["Air quality index", stats.airQualityIndex.toFixed(1), "AQHI"],
+          ["Environmental Quality Index", stats.airQualityIndex.toFixed(1), "EQI"],
         ];
 
         statDefs.forEach(([label, value, unit]) => {
@@ -982,7 +982,7 @@
           ["Area (km²)", stats.areaKm2.toLocaleString()],
           ["Avg. household income", `$${stats.avgIncome.toLocaleString()}`],
           ["Employment rate", `${stats.employmentRate.toFixed(1)}%`],
-          ["Air quality index (AQHI)", stats.airQualityIndex.toFixed(1)],
+          ["Environmental Quality Index (EQI)", stats.airQualityIndex.toFixed(1)],
         ];
         statDefs.forEach(([label, value]) => {
           const box = createElement("div", "print-stat");
