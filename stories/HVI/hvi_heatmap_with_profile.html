@@ -30,11 +30,10 @@
       .table-wrap { display: none; overflow-x: auto; background: #fff; border: 1px solid #e3e0d5; border-radius: 10px; }
       .table-wrap.visible { display: block; }
       table { width: 100%; border-collapse: collapse; font-size: 12px; }
-      thead th { height: 128px; padding: 6px 3px; background: #f4f2ea; border-bottom: 2px solid #e3e0d5; font-size: 10.5px; font-weight: 600; color: #6b6b60; text-align: center; vertical-align: bottom; cursor: pointer; user-select: none; }
+      thead th { height: 128px; padding: 6px 3px; background: #f4f2ea; border-bottom: 2px solid #e3e0d5; font-size: 10.5px; font-weight: 700; color: #6b6b60; text-align: center; vertical-align: bottom; cursor: pointer; user-select: none; }
       thead th.active { color: #2b2b26; }
       thead th.sticky { position: sticky; z-index: 3; padding: 8px 10px; white-space: nowrap; }
-      th.id-column { left: 0; width: 54px; min-width: 54px; max-width: 54px; }
-      th.name-column { left: 54px; width: 210px; min-width: 210px; max-width: 210px; text-align: left; }
+      th.name-column { left: 0; width: 210px; min-width: 210px; max-width: 210px; text-align: left; }
       th.measure-column { width: 46px; min-width: 46px; max-width: 46px; }
       th.summary-column { width: 72px; min-width: 72px; max-width: 72px; }
       .vertical-label { display: inline-block; max-height: 108px; writing-mode: vertical-rl; transform: rotate(180deg); }
@@ -42,8 +41,7 @@
       tbody tr:nth-child(odd) { background: #fff; }
       tbody tr:nth-child(even) { background: #fcfbf8; }
       tbody td.sticky { position: sticky; z-index: 1; padding: 5px 10px; background: inherit; font-size: 11.5px; white-space: nowrap; }
-      td.id-column { left: 0; }
-      td.name-column { left: 54px; border-right: 1px solid #e3e0d5; font-weight: 500; text-align: left; }
+      td.name-column { left: 0; border-right: 1px solid #e3e0d5; font-weight: 500; font-size: 13px; text-align: left; }
       td.heat-cell { height: 26px; border: 1px solid rgba(255, 255, 255, 0.6); font-size: 10.5px; text-align: center; transition: outline 0.1s; }
       td.heat-cell:hover { position: relative; z-index: 1; outline: 2px solid #2b2b26; outline-offset: -2px; }
 
@@ -86,7 +84,6 @@
       .profile-close:hover { background: #e9e6dc; color: #2b2b26; }
 
       .profile-header { padding-right: 30px; }
-      .profile-id { font-size: 11px; color: #9a9688; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; }
       .profile-name { font-size: 19px; font-weight: 700; margin: 2px 0 2px; letter-spacing: -0.01em; }
       .profile-hvi-badge {
         display: inline-flex; align-items: center; gap: 6px;
@@ -106,6 +103,9 @@
       }
 
       .profile-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+      .stat-box-emphasis { grid-column: 1 / -1; background: #fdf3e4; border-color: #f0d9ae; }
+      .stat-box-emphasis .stat-label { color: #a06a1a; }
+      .stat-box-emphasis .stat-value { font-size: 20px; color: #8a4f0d; }
       .stat-box { padding: 8px 10px; background: #fbfaf7; border: 1px solid #eeece3; border-radius: 7px; }
       .stat-label { font-size: 10px; color: #9a9688; font-weight: 600; }
       .stat-value { font-size: 14px; font-weight: 700; color: #2b2b26; margin-top: 2px; }
@@ -138,6 +138,16 @@
       #print-root { display: none; }
 
       @media print {
+        html, body {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          color-adjust: exact;
+        }
+        #print-root *, #print-root {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          color-adjust: exact;
+        }
         body * { visibility: hidden; }
         #print-root, #print-root * { visibility: visible; }
         #print-root { display: block; position: absolute; top: 0; left: 0; width: 100%; padding: 24px; }
@@ -151,12 +161,14 @@
         .print-stat { border: 1px solid #ddd; border-radius: 6px; padding: 8px 10px; }
         .print-stat .stat-label { font-size: 9px; }
         .print-stat .stat-value { font-size: 13px; }
+        .print-stat-emphasis { grid-column: 1 / -1; border-color: #e0b060; background: #fdf3e4; }
+        .print-stat-emphasis .stat-value { font-size: 18px; }
         .print-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #444; margin: 16px 0 6px; border-bottom: 1px solid #ccc; padding-bottom: 3px; }
         .print-subindex-list { column-count: 2; column-gap: 20px; }
         .print-subindex-row { display: flex; align-items: center; gap: 6px; font-size: 10.5px; break-inside: avoid; padding: 2px 0; }
         .print-subindex-row .subindex-name { flex: 1 1 auto; }
-        .print-subindex-row .subindex-track { flex: 0 0 70px; height: 6px; border: 1px solid #ccc; }
-        .print-subindex-row .subindex-val { flex: 0 0 26px; }
+        .print-subindex-row .subindex-track { flex: 0 0 70px; height: 6px; border: 1px solid #ccc; overflow: hidden; }
+        .print-subindex-row .subindex-val { flex: 0 0 32px; text-align: right; }
         .print-footer { margin-top: 20px; font-size: 9.5px; color: #888; }
         @page { size: portrait; margin: 12mm; }
       }
@@ -171,6 +183,7 @@
         </header>
 
         <section class="legend" id="legend" aria-label="Heatmap color legend"></section>
+        <p style="font-size: 11.5px; color: #9a9688; margin: 0 0 16px;">*HVI = Normalized HVI</p>
         <div class="status" id="status" role="status"></div>
 
         <div class="table-wrap" id="table-wrap">
@@ -229,11 +242,10 @@
             "Blue Space",
           ],
         },
-        { key: "hvi", label: "HVI", color: "orange", columns: ["HVI"] },
         {
-          key: "normalized-hvi",
-          label: "Normalized HVI",
-          color: "purple",
+          key: "hvi-normalized",
+          label: "HVI*",
+          color: "orange",
           columns: ["Normalized HVI"],
         },
       ];
@@ -243,7 +255,6 @@
         red: ["#ffd9d1", "#ffb6a7", "#f28d75", "#e35d3f", "#b8331a"],
         green: ["#dbeed7", "#bde0b6", "#90ca88", "#5bab5c", "#357a37"],
         orange: ["#ffe4bf", "#ffd090", "#ffb45b", "#f5891f", "#c2600a"],
-        purple: ["#e8dcf8", "#d2b9ef", "#bb91e3", "#9766d2", "#65359d"],
       };
 
       const ACCENT_LINES = {
@@ -251,14 +262,17 @@
         red: "#e07a5f",
         green: "#7aac6e",
         orange: "#f0a24a",
-        purple: "#a483cf",
       };
 
       const ALL_COLUMNS = CATEGORIES.flatMap((category) =>
-        category.columns.map((column) => ({ column, color: category.color })),
+        category.columns.map((column) => ({
+          column,
+          color: category.color,
+          label: column === "Normalized HVI" ? "HVI*" : column,
+        })),
       );
 
-      const SUMMARY_COLUMNS = new Set(["HVI", "Normalized HVI"]);
+      const SUMMARY_COLUMNS = new Set(["Normalized HVI"]);
 
       // Approximate community locations within Nova Scotia (placeholder — update with real
       // boundary data later). Lng/lat roughly cover NS's bounding box: lng -66.4..-59.8, lat 43.4..47.05
@@ -317,22 +331,20 @@
         };
       }
 
+      function formatIndexValue(value) {
+        // Sub-index and HVI values are stored on a 0.1–0.9 scale; display them
+        // scaled to 10–90 (multiply by 100) without stating the range itself.
+        return Number.isFinite(value) ? (value * 100).toFixed(1) : "—";
+      }
+
       function getPlaceholderStats(row) {
         const rand = seededRandom(row.id);
         const population = Math.round(900 + rand() * 14000);
-        const households = Math.round(population / (2.1 + rand() * 0.6));
         const areaKm2 = Math.round(20 + rand() * 480);
-        const avgIncome = Math.round((42000 + rand() * 38000) / 500) * 500;
-        const employmentRate = Math.round((52 + rand() * 30) * 10) / 10;
-        const airQualityIndex = Math.round((22 + rand() * 55) * 10) / 10;
 
         return {
           population,
-          households,
           areaKm2,
-          avgIncome,
-          employmentRate,
-          airQualityIndex,
         };
       }
 
@@ -702,14 +714,11 @@
 
       function getSortedRows() {
         const rows = [...state.rows];
-
-        if (!state.sortColumn) {
-          return rows.sort((first, second) => first.id - second.id);
-        }
+        const { column, direction } = getEffectiveSort();
 
         return rows.sort((first, second) => {
-          const firstValue = first[state.sortColumn];
-          const secondValue = second[state.sortColumn];
+          const firstValue = first[column];
+          const secondValue = second[column];
 
           if (firstValue === null || firstValue === undefined) return 1;
           if (secondValue === null || secondValue === undefined) return -1;
@@ -719,7 +728,7 @@
               ? firstValue.localeCompare(secondValue)
               : firstValue - secondValue;
 
-          return state.sortDirection === "asc" ? comparison : -comparison;
+          return direction === "asc" ? comparison : -comparison;
         });
       }
 
@@ -742,9 +751,17 @@
         renderTable();
       }
 
+      function getEffectiveSort() {
+        return {
+          column: state.sortColumn || "name",
+          direction: state.sortColumn ? state.sortDirection : "asc",
+        };
+      }
+
       function createHeader(label, column, className, accent) {
         const header = createElement("th", className);
-        const active = state.sortColumn === column;
+        const { column: activeColumn, direction } = getEffectiveSort();
+        const active = activeColumn === column;
         header.classList.toggle("active", active);
         header.title = `Sort by ${label}`;
         header.addEventListener("click", () => handleSort(column));
@@ -755,7 +772,7 @@
         header.appendChild(createElement("span", labelClass, label));
 
         if (active) {
-          const arrow = state.sortDirection === "desc" ? "▼" : "▲";
+          const arrow = direction === "desc" ? "▼" : "▲";
           header.appendChild(createElement("span", "sort-arrow", arrow));
         }
 
@@ -764,14 +781,13 @@
 
       function renderTable() {
         const headingRow = document.createElement("tr");
-        headingRow.appendChild(createHeader("ID", "id", "sticky id-column"));
         headingRow.appendChild(createHeader("Community", "name", "sticky name-column"));
 
-        ALL_COLUMNS.forEach(({ column, color }) => {
+        ALL_COLUMNS.forEach(({ column, color, label }) => {
           const columnClass = SUMMARY_COLUMNS.has(column)
             ? "measure-column summary-column"
             : "measure-column";
-          headingRow.appendChild(createHeader(column, column, columnClass, color));
+          headingRow.appendChild(createHeader(label || column, column, columnClass, color));
         });
 
         elements.tableHead.replaceChildren(headingRow);
@@ -781,8 +797,6 @@
         getSortedRows().forEach((row) => {
           const tableRow = document.createElement("tr");
           if (row.id === state.selectedId) tableRow.classList.add("row-selected");
-
-          tableRow.appendChild(createElement("td", "sticky id-column", String(row.id)));
 
           const nameCell = createElement("td", "sticky name-column", row.name);
           nameCell.title = `View profile for ${row.name}`;
@@ -796,7 +810,6 @@
 
             cell.style.background = band === null ? "#efede7" : RAMPS[color][band];
             cell.style.color = band !== null && band >= 3 ? "#fff" : "#2b2b26";
-            cell.title = `${row.name}: ${column}: ${Number.isFinite(value) ? value.toFixed(4) : "No data"}`;
 
             tableRow.appendChild(cell);
           });
@@ -824,7 +837,7 @@
 
       function buildSubindexList(row, container, forPrint) {
         CATEGORIES.forEach((category) => {
-          if (category.key === "hvi" || category.key === "normalized-hvi") return;
+          if (category.key === "hvi-normalized") return;
 
           const heading = createElement(
             "div",
@@ -851,7 +864,7 @@
             rowEl.appendChild(track);
 
             rowEl.appendChild(
-              createElement("span", "subindex-val", Number.isFinite(value) ? value.toFixed(2) : "—"),
+              createElement("span", "subindex-val", formatIndexValue(value)),
             );
 
             list.appendChild(rowEl);
@@ -873,8 +886,6 @@
         elements.profilePanel.classList.add("open");
 
         const stats = getPlaceholderStats(row);
-        const hviDomain = state.domains.HVI || { min: 0, max: 1 };
-        const badgeColor = hviBandColor(row.HVI, hviDomain);
 
         const inner = document.createDocumentFragment();
 
@@ -885,17 +896,7 @@
         inner.appendChild(closeBtn);
 
         const header = createElement("div", "profile-header");
-        header.appendChild(createElement("div", "profile-id", `Community ID ${row.id}`));
         header.appendChild(createElement("h2", "profile-name", row.name));
-
-        const badge = createElement(
-          "span",
-          "profile-hvi-badge",
-          `HVI ${Number.isFinite(row.HVI) ? row.HVI.toFixed(3) : "—"}`,
-        );
-        badge.style.background = badgeColor;
-        badge.style.color = getBand(row.HVI, hviDomain) >= 3 ? "#fff" : "#5a3d10";
-        header.appendChild(badge);
         inner.appendChild(header);
 
         const mapBox = createElement("div", "profile-map");
@@ -906,16 +907,13 @@
 
         const statsGrid = createElement("div", "profile-stats");
         const statDefs = [
-          ["Population", stats.population.toLocaleString(), ""],
-          ["Households", stats.households.toLocaleString(), ""],
-          ["Area", stats.areaKm2.toLocaleString(), "km²"],
-          ["Avg. household income", `$${stats.avgIncome.toLocaleString()}`, ""],
-          ["Employment rate", stats.employmentRate.toFixed(1), "%"],
-          ["Environmental Quality Index", stats.airQualityIndex.toFixed(1), "EQI"],
+          ["HVI*", formatIndexValue(row["Normalized HVI"]), "", true],
+          ["Population", stats.population.toLocaleString(), "", false],
+          ["Area", stats.areaKm2.toLocaleString(), "km²", false],
         ];
 
-        statDefs.forEach(([label, value, unit]) => {
-          const box = createElement("div", "stat-box");
+        statDefs.forEach(([label, value, unit, emphasize]) => {
+          const box = createElement("div", emphasize ? "stat-box stat-box-emphasis" : "stat-box");
           box.appendChild(createElement("div", "stat-label", label));
           const valueLine = createElement("div", "stat-value", value);
           if (unit) valueLine.appendChild(createElement("span", "stat-unit", unit));
@@ -933,14 +931,6 @@
         printBtn.addEventListener("click", () => printProfile(row, stats));
         inner.appendChild(printBtn);
 
-        inner.appendChild(
-          createElement(
-            "div",
-            "profile-footnote",
-            "Population, income, employment and air quality figures shown here are placeholder values pending updated source data.",
-          ),
-        );
-
         elements.profilePanelInner.replaceChildren(inner);
       }
 
@@ -954,7 +944,6 @@
           createElement("div", "print-meta", "Nova Scotia Heat Vulnerability Index — Community Profile"),
         );
         header.appendChild(titleBlock);
-        header.appendChild(createElement("div", "print-id", `Community ID ${row.id}`));
         root.appendChild(header);
 
         const grid = createElement("div", "print-grid");
@@ -964,28 +953,16 @@
         mapBox.appendChild(renderMiniMap(row, { width: 340, height: 240, forPrint: true }));
         left.appendChild(mapBox);
 
-        const hviDomain = state.domains.HVI || { min: 0, max: 1 };
-        left.appendChild(createElement("div", "print-section-title", "Overall HVI"));
-        const hviStat = createElement("div", "print-stat");
-        hviStat.appendChild(createElement("div", "stat-label", "HVI score"));
-        hviStat.appendChild(
-          createElement("div", "stat-value", Number.isFinite(row.HVI) ? row.HVI.toFixed(3) : "—"),
-        );
-        left.appendChild(hviStat);
-
         const right = document.createElement("div");
         right.appendChild(createElement("div", "print-section-title", "Community snapshot"));
         const statsGrid = createElement("div", "print-stats");
         const statDefs = [
-          ["Population", stats.population.toLocaleString()],
-          ["Households", stats.households.toLocaleString()],
-          ["Area (km²)", stats.areaKm2.toLocaleString()],
-          ["Avg. household income", `$${stats.avgIncome.toLocaleString()}`],
-          ["Employment rate", `${stats.employmentRate.toFixed(1)}%`],
-          ["Environmental Quality Index (EQI)", stats.airQualityIndex.toFixed(1)],
+          ["HVI*", formatIndexValue(row["Normalized HVI"]), true],
+          ["Population", stats.population.toLocaleString(), false],
+          ["Area (km²)", stats.areaKm2.toLocaleString(), false],
         ];
-        statDefs.forEach(([label, value]) => {
-          const box = createElement("div", "print-stat");
+        statDefs.forEach(([label, value, emphasize]) => {
+          const box = createElement("div", emphasize ? "print-stat print-stat-emphasis" : "print-stat");
           box.appendChild(createElement("div", "stat-label", label));
           box.appendChild(createElement("div", "stat-value", value));
           statsGrid.appendChild(box);
@@ -1004,8 +981,7 @@
           createElement(
             "div",
             "print-footer",
-            "Population, income, employment and air quality figures are placeholder values pending updated source data. " +
-              "Map location is approximate. Generated from the Nova Scotia Heat Vulnerability Index dashboard.",
+            "Map location is approximate. Generated from the Nova Scotia Heat Vulnerability Index dashboard.",
           ),
         );
 
