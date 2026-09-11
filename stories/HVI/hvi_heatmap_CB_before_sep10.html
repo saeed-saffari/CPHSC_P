@@ -41,20 +41,20 @@
 
       .table-wrap { display: none; overflow-x: auto; background: #fff; border: 1px solid #e3e0d5; border-radius: 10px; }
       .table-wrap.visible { display: block; }
-      table { width: 100%; border-collapse: collapse; font-size: 13px; }
-      thead th { height: 148px; padding: 7px 4px; background: #f4f2ea; border-bottom: 2px solid #e3e0d5; font-size: 12.5px; font-weight: 700; color: #6b6b60; text-align: center; vertical-align: bottom; cursor: pointer; user-select: none; }
+      table { width: 100%; border-collapse: collapse; font-size: 12px; }
+      thead th { height: 128px; padding: 6px 3px; background: #f4f2ea; border-bottom: 2px solid #e3e0d5; font-size: 10.5px; font-weight: 700; color: #6b6b60; text-align: center; vertical-align: bottom; cursor: pointer; user-select: none; }
       thead th.active { color: #2b2b26; }
       thead th.sticky { position: sticky; z-index: 3; padding: 8px 10px; white-space: nowrap; }
       th.name-column { left: 0; width: 210px; min-width: 210px; max-width: 210px; text-align: left; }
       th.measure-column { width: 46px; min-width: 46px; max-width: 46px; }
       th.summary-column { width: 72px; min-width: 72px; max-width: 72px; }
-      .vertical-label { display: inline-block; max-height: 130px; writing-mode: vertical-rl; transform: rotate(180deg); }
-      .sort-arrow { margin-left: 3px; font-size: 10px; }
+      .vertical-label { display: inline-block; max-height: 108px; writing-mode: vertical-rl; transform: rotate(180deg); }
+      .sort-arrow { margin-left: 3px; font-size: 9px; }
       tbody tr:nth-child(odd) { background: #fff; }
       tbody tr:nth-child(even) { background: #fcfbf8; }
-      tbody td.sticky { position: sticky; z-index: 1; padding: 6px 10px; background: inherit; font-size: 13px; white-space: nowrap; }
-      td.name-column { left: 0; border-right: 1px solid #e3e0d5; font-weight: 500; font-size: 14px; text-align: left; }
-      td.heat-cell { height: 29px; border: 1px solid rgba(255, 255, 255, 0.6); font-size: 12px; text-align: center; transition: outline 0.1s; }
+      tbody td.sticky { position: sticky; z-index: 1; padding: 5px 10px; background: inherit; font-size: 11.5px; white-space: nowrap; }
+      td.name-column { left: 0; border-right: 1px solid #e3e0d5; font-weight: 500; font-size: 13px; text-align: left; }
+      td.heat-cell { height: 26px; border: 1px solid rgba(255, 255, 255, 0.6); font-size: 10.5px; text-align: center; transition: outline 0.1s; }
       td.heat-cell:hover { position: relative; z-index: 1; outline: 2px solid #2b2b26; outline-offset: -2px; }
 
       @media (max-width: 680px) {
@@ -231,11 +231,6 @@
 
       const CATEGORIES = [
         {
-          key: "exposure",
-          label: "Exposure",
-          columns: ["Heatwave Score", "Air Quality PM2.5", "Air Quality NO2"],
-        },
-        {
           key: "sensitivity",
           label: "Sensitivity",
           columns: [
@@ -248,6 +243,11 @@
             "% of population on life-sustaining care",
             "% Multimorbidity",
           ],
+        },
+        {
+          key: "exposure",
+          label: "Exposure",
+          columns: ["Heatwave Score", "Air Quality PM2.5", "Air Quality NO2"],
         },
         {
           key: "adaptive",
