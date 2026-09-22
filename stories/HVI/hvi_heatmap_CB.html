@@ -154,15 +154,22 @@
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
           color-adjust: exact;
+          margin: 0;
+          padding: 0;
+          min-height: auto;
         }
         #print-root *, #print-root {
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
           color-adjust: exact;
         }
-        body * { visibility: hidden; }
-        #print-root, #print-root * { visibility: visible; }
-        #print-root { display: block; position: absolute; top: 0; left: 0; width: 100%; padding: 24px; }
+        .layout { display: none !important; }
+        #print-root {
+          display: block;
+          position: static;
+          width: auto;
+          padding: 0;
+        }
         .print-header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid #2b2b26; padding-bottom: 10px; margin-bottom: 14px; }
         .print-header h1 { font-size: 20px; margin: 0; }
         .print-header .print-id { font-size: 12px; color: #6b6b60; }
@@ -191,7 +198,7 @@
     <div class="layout">
       <main>
         <header>
-          <h1>Nova Scotia Heat Vulnerability Index</h1>
+          <h1>Nova Scotia Heat Vulnerability Index (HVI)</h1>
         </header>
 
         <div class="legend-row">
@@ -470,8 +477,11 @@
       }
 
       function formatArea(value) {
+        // return Number.isFinite(value)
+        //   ? value.toLocaleString(undefined, { maximumFractionDigits: 2 })
+        //   : "N/A";
         return Number.isFinite(value)
-          ? value.toLocaleString(undefined, { maximumFractionDigits: 2 })
+          ? Math.round(value).toLocaleString()
           : "N/A";
       }
 
@@ -1123,7 +1133,7 @@
           createElement(
             "div",
             "print-footer",
-            "Map location is approximate. Generated from the Nova Scotia Heat Vulnerability Index dashboard.",
+            "",
           ),
         );
 
