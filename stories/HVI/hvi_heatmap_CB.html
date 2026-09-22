@@ -228,6 +228,7 @@
 
       const DEFAULT_EXCEL_FILE = "HVI_index_sep9.xlsx";
       const DEFAULT_BOUNDARIES_FILE = "community_boundaries.geojson";
+      const PROFILE_COLUMNS = ["pop_total_all", "area"];
 
       const CATEGORIES = [
         {
@@ -451,33 +452,27 @@
         setPalette(state.paletteId === "colorblind" ? "original" : "colorblind");
       });
 
-      // ---------- Placeholder community statistics ----------
-      // Deterministic pseudo-random generator seeded by id, so values stay stable
-      // across renders until real data is supplied.
-      function seededRandom(seed) {
-        let value = seed % 2147483647;
-        if (value <= 0) value += 2147483646;
-        return function next() {
-          value = (value * 16807) % 2147483647;
-          return (value - 1) / 2147483646;
-        };
-      }
-
       function formatIndexValue(value) {
         // Sub-index and HVI values are stored on a 0.1–0.9 scale; display them
         // scaled to 10–90 (multiply by 100) without stating the range itself.
         return Number.isFinite(value) ? (value * 100).toFixed(1) : "—";
       }
 
-      function getPlaceholderStats(row) {
-        const rand = seededRandom(row.id);
-        const population = Math.round(900 + rand() * 14000);
-        const areaKm2 = Math.round(20 + rand() * 480);
-
+      function getCommunityStats(row) {
         return {
-          population,
-          areaKm2,
+          population: row.pop_total_all,
+          areaKm2: row.area,
         };
+      }
+
+      function formatPopulation(value) {
+        return Number.isFinite(value) ? Math.round(value).toLocaleString() : "N/A";
+      }
+
+      function formatArea(value) {
+        return Number.isFinite(value)
+          ? value.toLocaleString(undefined, { maximumFractionDigits: 2 })
+          : "N/A";
       }
 
       // ---------- Real community boundaries (optional GeoJSON) ----------
@@ -795,9 +790,13 @@
           String(value ?? "").trim(),
         );
 
-        const missingColumns = ALL_COLUMNS.filter(
-          ({ column }) => !headers.includes(column),
-        ).map(({ column }) => column);
+        const requiredColumns = [
+          ...ALL_COLUMNS.map(({ column }) => column),
+          ...PROFILE_COLUMNS,
+        ];
+        const missingColumns = requiredColumns.filter(
+          (column) => !headers.includes(column),
+        );
 
         if (missingColumns.length) {
           throw new Error(`The workbook is missing these columns: ${missingColumns.join(", ")}.`);
@@ -1028,7 +1027,7 @@
 
         elements.profilePanel.classList.add("open");
 
-        const stats = getPlaceholderStats(row);
+        const stats = getCommunityStats(row);
 
         const inner = document.createDocumentFragment();
 
@@ -1051,8 +1050,8 @@
         const statsGrid = createElement("div", "profile-stats");
         const statDefs = [
           ["HVI*", formatIndexValue(row["Normalized HVI"]), "", true],
-          ["Population", stats.population.toLocaleString(), "", false],
-          ["Area", stats.areaKm2.toLocaleString(), "km²", false],
+          ["Population", formatPopulation(stats.population), "", false],
+          ["Area", formatArea(stats.areaKm2), "km²", false],
         ];
 
         statDefs.forEach(([label, value, unit, emphasize]) => {
@@ -1101,8 +1100,8 @@
         const statsGrid = createElement("div", "print-stats");
         const statDefs = [
           ["HVI*", formatIndexValue(row["Normalized HVI"]), true],
-          ["Population", stats.population.toLocaleString(), false],
-          ["Area (km²)", stats.areaKm2.toLocaleString(), false],
+          ["Population", formatPopulation(stats.population), false],
+          ["Area (km²)", formatArea(stats.areaKm2), false],
         ];
         statDefs.forEach(([label, value, emphasize]) => {
           const box = createElement("div", emphasize ? "print-stat print-stat-emphasis" : "print-stat");
