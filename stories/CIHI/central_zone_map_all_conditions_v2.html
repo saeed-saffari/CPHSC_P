@@ -120,7 +120,7 @@ path.sel { stroke: #f29d38; stroke-width: 3.2; }
   <div class="field"><span>Show as</span>
     <div class="seg" id="measure" data-value="count">
       <button data-v="count" class="on">People</button>
-      <button data-v="rate">Per 1,000 residents</button>
+      <button data-v="rate">% of residents</button>
     </div>
   </div>
 </aside>
@@ -156,7 +156,7 @@ path.sel { stroke: #f29d38; stroke-width: 3.2; }
 <p class="note">
   Counts assume one row per person in the CIHI dataset. The number of conditions is the sum of the 34 indicators.
   The colour scale adjusts to each selection. Grey means no CIHI records for the selected age and gender.
-  Rates use the all-age community population (total, female or male) as the denominator; age filters change the
+  Percentages (people in the selection divided by the community population) use the all-age community population (total, female or male) as the denominator; age filters change the
   numerator only, so these are not age-specific or age-standardized prevalence. Population and CIHI reference periods may differ.
 </p>
 
@@ -227,12 +227,12 @@ function sumTable(t, key, gender, a0, a1) {
   DATA.genders.forEach(g => { if (gender === "all" || gender === g) for (let i=a0;i<=a1;i++) s += row[g]?.[i] || 0; });
   return s;
 }
-const fmt = (v, rate) => rate ? v.toLocaleString(undefined, {maximumFractionDigits: 1})
+const fmt = (v, rate) => rate ? v.toLocaleString(undefined, {maximumSignificantDigits: 3}) + "%"
                               : Math.round(v).toLocaleString();
 function tipText(p) {
   if (p.records === 0) return p.name + "\nNo CIHI records for this selection.";
   return p.rate
-    ? p.name + "\n" + fmt(p.value,true) + " per 1,000\nPeople: " + p.n.toLocaleString() +
+    ? p.name + "\n" + fmt(p.value,true) + " of community population\nPeople: " + p.n.toLocaleString() +
       "\nPopulation: " + p.denominator.toLocaleString()
     : p.name + "\nPeople: " + p.n.toLocaleString();
 }
@@ -246,7 +246,7 @@ function showDetail(p) {
   d.innerHTML = "<h3></h3><p class='big'></p><p></p><p></p><p></p>";
   const ps = d.querySelectorAll("h3,p");
   ps[0].textContent = p.name;
-  ps[1].textContent = p.records === 0 ? "No records" : (p.rate ? fmt(p.value,true) + " per 1,000" : p.n.toLocaleString() + " people");
+  ps[1].textContent = p.records === 0 ? "No records" : (p.rate ? fmt(p.value,true) : p.n.toLocaleString() + " people");
   ps[2].textContent = "People in selection: " + p.n.toLocaleString();
   ps[3].textContent = "Population denominator: " + p.denominator.toLocaleString();
   ps[4].textContent = "Share of zone selection: " + share.toFixed(1) + "%";
@@ -279,14 +279,14 @@ function update(source) {
   }
   $("title").textContent = title;
   $("sub").textContent = (gender === "all" ? "All genders" : DATA.genderLabels[gender]) + ", " + ageText(a0,a1);
-  $("ltitle").textContent = rate ? "People per 1,000 residents" : "Number of people";
+  $("ltitle").textContent = rate ? "% of community population" : "Number of people";
 
   paths.forEach(p => {
     p.n = tables.reduce((s,t) => s + sumTable(t, p.key, gender, a0, a1), 0);
     p.records = sumTable(DATA.records, p.key, gender, a0, a1);
     p.denominator = DATA.pop[p.key][gender];
     p.rate = rate;
-    p.value = rate ? p.n / p.denominator * 1000 : p.n;
+    p.value = rate ? p.n / p.denominator * 100 : p.n;
   });
   const withRec = paths.filter(p => p.records > 0);
   const max = Math.max(0, ...withRec.map(p => p.value));
